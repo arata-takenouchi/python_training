@@ -15,13 +15,20 @@
 
 
 # chapter zip
-days = ['Mon', 'Tue', 'Wed']
-fruits = ['apple', 'banana', 'orange']
-drinks = ['coffee', 'tea', 'beer']
+# days = ['Mon', 'Tue', 'Wed']
+# fruits = ['apple', 'banana', 'orange']
+# drinks = ['coffee', 'tea', 'beer']
 
 # for i in range(len(days)):
 #     print(days[i], fruits[i], drinks[i])
 
-for day, fruit, drink in zip(days, fruits, drinks):
-    print(day, fruit, drink)
+# for day, fruit, drink in zip(days, fruits, drinks):
+#     print(day, fruit, drink)
 
+
+# chapter loop dict
+d = {'x': 100, 'y': 200}
+print(d.items())
+
+for key, value in d.items():
+    print(key, ':', value)
