@@ -5,5 +5,10 @@
 # for i in range(2, 10, 3):
 #     print(i)
 
-for _ in range(10):
-    print('hello')
+# for _ in range(10):
+#     print('hello')
+
+# i = 0
+for i, fruit in enumerate(['apple', 'banana', 'orange']):
+    print(i, fruit)
+    # i += 1
