@@ -30,11 +30,11 @@
 
 
 # lambda
-l = ['Mon', 'tue', 'Wed', 'Thu', 'fri', 'sat', 'Sun']
-
-def change_words(words, func):
-    for word in words:
-        print(func(word))
+# l = ['Mon', 'tue', 'Wed', 'Thu', 'fri', 'sat', 'Sun']
+#
+# def change_words(words, func):
+#     for word in words:
+#         print(func(word))
 
 # def sample_func(word):
 #     return word.capitalize()
@@ -44,5 +44,45 @@ def change_words(words, func):
 
 # sample_func = lambda word: word.capitalize()
 
-change_words(l, lambda word: word.capitalize())
-change_words(l, lambda word: word.lower())
+# change_words(l, lambda word: word.capitalize())
+# change_words(l, lambda word: word.lower())
+
+
+# l = ['Good morning', 'Good afternoon', 'Good night']
+def counter(num=10):
+    for _ in range(num):
+        yield 'run'
+
+def greeting():
+    yield 'Good morning'
+    # for i in range(10):
+    #     print(i)
+    yield 'Good afternoon'
+    # for i in range(10):
+    #     print(i)
+    yield 'Good night'
+
+# for g in greeting():
+#     print(g)
+
+g = greeting()
+c = counter()
+
+print(next(g))
+
+print(next(c))
+print(next(c))
+print(next(c))
+print(next(c))
+print(next(c))
+
+print(next(g))
+
+print(next(c))
+print(next(c))
+print(next(c))
+print(next(c))
+print(next(c))
+
+print(next(g))
+# print(next(g))
