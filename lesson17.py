@@ -55,12 +55,29 @@
 # print(r)
 
 
-def say_something(word, *args):
-    print(word)
-    for arg in args:
-        print(arg)
-
-say_something('hi', 'Mike', 'Nuncy')
+# def say_something(word, *args):
+#     print(word)
+#     for arg in args:
+#         print(arg)
+#
+# say_something('hi', 'Mike', 'Nuncy')
 
 # t = ('Mike', 'Nuncy')
 # say_something('hi', *t)
+
+
+def menu(food, *args, **kwargs):
+    print(food)
+    print(args)
+    print(kwargs)
+    # for k, v in kwargs.items():
+    #     print(k, v)
+
+menu('banana', 'apple', 'orange', entree='beef', drink='coffee')
+
+# d = {
+#     'entree': 'beef',
+#     'drink': 'ice coffee',
+#     'dessert': 'ice'
+# }
+# menu(**d)
