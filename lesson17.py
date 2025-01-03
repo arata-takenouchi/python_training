@@ -34,11 +34,11 @@
 # menu(entree='chicken')
 
 
-def test_func(x, l=None):
-    if l is None:
-        l = []
-    l.append(x)
-    return l
+# def test_func(x, l=None):
+#     if l is None:
+#         l = []
+#     l.append(x)
+#     return l
 
 # y = [1,2,3]
 # r = test_func(100, y)
@@ -48,8 +48,19 @@ def test_func(x, l=None):
 # r = test_func(200, y)
 # print(r)
 
-r = test_func(100)
-print(r)
+# r = test_func(100)
+# print(r)
+#
+# r = test_func(100)
+# print(r)
 
-r = test_func(100)
-print(r)
+
+def say_something(word, *args):
+    print(word)
+    for arg in args:
+        print(arg)
+
+say_something('hi', 'Mike', 'Nuncy')
+
+# t = ('Mike', 'Nuncy')
+# say_something('hi', *t)
