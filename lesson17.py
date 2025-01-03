@@ -19,8 +19,17 @@
 
 
 # num: int = 10
-def add_num(a: int, b: int) -> int:
-    return a + b
+# def add_num(a: int, b: int) -> int:
+#     return a + b
+#
+# r = add_num(10, 20)
+# print(r)
 
-r = add_num(10, 20)
-print(r)
+
+def menu(entree='beef', drink='wine', dessert='ice'):
+    print('entree=', entree)
+    print('drink=', drink)
+    print('dessert=', dessert)
+
+# menu(entree='beef', drink='beer', dessert='ice')
+menu(entree='chicken')
