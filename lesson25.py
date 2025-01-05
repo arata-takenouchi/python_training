@@ -1,11 +1,7 @@
-s = """\
-AAA
-BBB
-CCC
-DDD
-"""
+import string
 
-with open('test.txt', 'r+') as f:
-    print(f.read())
-    f.seek(0)
-    f.write(s)
+with open('design/email_template.txt') as f:
+    t = string.Template(f.read())
+
+contents = t.substitute(name='Mike', contents='How are you?')
+print(contents)
