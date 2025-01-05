@@ -28,11 +28,18 @@ class TeslaCar(Car):
 
     def run(self):
         print(self.__enable_auto_run)
-        print('super fast')
+        # print('super fast')
     def auto_run(self):
         print('auto run')
 
 tesla_car = TeslaCar('Model S', passwd='123')
-# tesla_car.enable_auto_run = True
-# print(tesla_car.enable_auto_run)
-tesla_car.run()
+# tesla_car.__enable_auto_run = True
+print(tesla_car.__enable_auto_run)
+
+class T(object):
+    pass
+
+t = T()
+t.name = 'Mike'
+t.age = 20
+print(t.name)
