@@ -1,3 +1,2 @@
-f = open('test.txt', 'w')
-f.write('Test\n')
-f.close()
+with open('test.txt', 'w') as f:
+    f.write('Test\n')
