@@ -1,21 +1,19 @@
-class Person(object):
-    kind = 'human'
+class Word(object):
+    def __init__(self, text):
+        self.text = text
 
-    def __init__(self):
-        self.x = 100
+    def __str__(self):
+        return 'Word'
 
-    @classmethod
-    def what_is_your_kind(cls):
-        return cls.kind
+    def __len__(self):
+        return len(self.text)
 
-    @staticmethod
-    def about(year):
-        print(f'about human {year}')
+    def __add__(self, word):
+        return self.text.lower() + word.text.lower()
 
-a = Person()
-print(a.what_is_your_kind())
+    def __eq__(self, word):
+        return self.text.lower() == word.text.lower()
 
-print(Person.kind)
-print(Person.what_is_your_kind())
-
-Person.about(2025)
+w = Word('test')
+w2 = Word('Test')
+print(w == w2)
