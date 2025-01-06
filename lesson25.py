@@ -1,19 +1,10 @@
-import tempfile
+import subprocess
 
-with tempfile.TemporaryFile(mode='w+') as t:
-    t.write('hello')
-    t.seek(0)
-    print(t.read())
+# subprocess.run(['ls', '-al'])
+# subprocess.run('lsaa', shell=True, check=True)
 
-with tempfile.NamedTemporaryFile(delete=False) as t:
-    print(t.name)
-    with open(t.name, 'w+') as f:
-        f.write('test\n')
-        f.seek(0)
-        print(f.read())
-
-with tempfile.TemporaryDirectory() as td:
-    print(td)
-
-temp_dir = tempfile.mkdtemp()
-print(temp_dir)
+p1 = subprocess.Popen(['ls', '-al'], stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['grep', 'test'], stdin=p1.stdout, stdout=subprocess.PIPE)
+p1.stdout.close()
+output = p2.communicate()[0]
+print(output)
