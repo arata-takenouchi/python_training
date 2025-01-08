@@ -1,16 +1,34 @@
-# This is a sample Python script.
+import os
+import sys
 
-# Press ⌃F5 to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import flask
 
+import roboter.contlorller.conversation
+# from roboter.contlorller import conversation
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+import settings
 
+class MainError(Exception):
+    pass
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main():
+    try:
+        roboter.contlorller.conversation.talk_about_restaulant
+    except Exception as e:
+        print(e)
+    raise MainError('error')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+x = [(i, x) for i in [1,2,3,4] for x in [1,2,3]]
+
+d = {'key1': 'value1', 'key2', 'value2'}
+if 'key1' in d:
+    print('test')
+
+if 'key1' in d.keys():
+    print('test')
+
+for name, count in ranking.items():
+    print(name, count)
+
+if __name__ == 'main':
+    main()
