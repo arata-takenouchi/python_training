@@ -1,16 +1,16 @@
 import logging
 
-# logging.basicConfig(filename='test.log', level=logging.DEBUG)
-# formatter = '%(levelname)s: %(message)s'
-formatter = '%(asctime)s: %(message)s'
-logging.basicConfig(level=logging.INFO, format=formatter)
+import logtest
 
-# logging.critical('critical')
-# logging.error('error')
-# logging.warning('warning')
-# logging.info('info')
-# logging.debug('debug')
+logging.basicConfig(level=logging.INFO)
 
-# logging.info('info %s %s' % ('test', 'test2'))
-logging.info('info %s %s', 'test', 'test2')
+logging.info('info')
 
+logger = logging.getLogger(__name__)
+logger.info('from main')
+
+# logger = logging.getLogger(__name__)
+# logger.setLevel(logging.DEBUG)
+# logger.debug('debug')
+
+logtest.do_something()
