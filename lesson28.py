@@ -1,17 +1,12 @@
-import logging
+import logging.config
 
-import logtest
+logging.config.fileConfig('logging.ini')
+logger = logging.getLogger('simpleExample')
+# logger = logging.getLogger('__name__')
 
-logging.basicConfig(level=logging.INFO)
-
-class NoPassFilter(logging.Filter):
-    def filter(self, record):
-        log_message = record.getMessage()
-        return 'password' not in log_message
-
-logger = logging.getLogger(__name__)
-logger.addFilter(NoPassFilter())
-logger.info('from main')
-logger.info('from main password = "test"')
-logger.info('from main xxx = "test"')
+logger.debug('debug message')
+logger.info('info message')
+logger.warning('warning message')
+logger.error('error message')
+logger.critical('critical message')
 
