@@ -1,12 +1,18 @@
-import logging.config
+import logging
 
-logging.config.fileConfig('logging.ini')
-logger = logging.getLogger('simpleExample')
-# logger = logging.getLogger('__name__')
+logger = logging.getLogger(__name__)
 
-logger.debug('debug message')
-logger.info('info message')
-logger.warning('warning message')
-logger.error('error message')
-logger.critical('critical message')
+logger.error('api call is failed')
 
+logger.error({
+    'action': 'create',
+    'status' : 'fail',
+    'message': 'api call is failed'
+})
+
+logger.info({
+    'action': 'save',
+    'csv_file': self.csv_file,
+    'force': True,
+    'status': 'run'
+})
