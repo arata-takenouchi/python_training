@@ -1,29 +1,25 @@
-import happybase
+from neo4j import GraphDatabase
 
-connection = happybase.Connection('localhost')
-connection.open()
+driver = GraphDatabase.driver('bolt://127.0.0.1:7687', auth=('neo4j', 'password'))
 
-connection.create_table(b'sns', {'blog': dict()})
-table = connection.table(b'sns')
+def clear_db(tx):
+    tx.run('MATCH (n) DETACH DELETE n')
 
-table.put(
-    b'user1', {
-        b'blog:bitcoin': b'user1 about bitcoin',
-        b'blog:soccer': b'user1 about soccer'
-    }
-)
+def add_friend(tx, name, friend_name=None):
+    if not friend_name:
+        return tx.run('CREATE (p:Person {name: $name}) RETURN p', name=name)
+    return tx.run('MATCH (p:Person {name: $name}) '
+                  'CREATE (p)-[:FRIEND]->(:Person {name: $friend_name})',
+                  name=name, friend_name=friend_name)
 
-table.put(
-    b'user2', {
-        b'blog:soccer': b'user2 about soccer'
-    }
-)
+def print_friend(tx, name):
+    for record in tx.run('MATCH (p {name: $name})-[:FRIEND]->(yourFriends) '
+                         'RETURN p,yourFriends', name=name):
+        print(record)
 
-print(list(table.scan()))
-print()
-print(list(table.scan(row_prefix=b'user1')))
-print()
-print(list(table.scan(columns=[b'blog:soccer'])))
-
-connection.disable_table(b'sns')
-connection.delete_table(b'sns')
+with driver.session() as session:
+    session.execute_write(clear_db)
+    session.execute_write(add_friend, 'Arata')
+    for f in ['Mike', 'Nancy']:
+        session.execute_write(add_friend, 'Arata', f)
+    session.execute_read(print_friend, 'Arata')
