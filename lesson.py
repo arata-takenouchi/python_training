@@ -1,45 +1,29 @@
-import datetime
-from pymongo import MongoClient
+import happybase
 
-client = MongoClient('mongodb://localhost:27017/')
-db = client['test_database']
+connection = happybase.Connection('localhost')
+connection.open()
 
-stack1 = {
-    'name': 'customer1',
-    'pip': ['python', 'java', 'go'],
-    'info': {'os': 'mac'},
-    'date': datetime.datetime.now(datetime.UTC)
-}
+connection.create_table(b'sns', {'blog': dict()})
+table = connection.table(b'sns')
 
-stack2 = {
-    'name': 'customer2',
-    'pip': ['python', 'java'],
-    'info': {'os': 'windows'},
-    'date': datetime.datetime.now(datetime.UTC)
-}
+table.put(
+    b'user1', {
+        b'blog:bitcoin': b'user1 about bitcoin',
+        b'blog:soccer': b'user1 about soccer'
+    }
+)
 
-db_stacks = db.stacks
-# stack_id = db_stacks.insert_one(stack1).inserted_id
-# print(stack_id, type(stack_id))
-# print('####')
-from bson.objectid import ObjectId
-# str_stack_id = '6785035dc47e400254dc3bf0'
-# print(db_stacks.find_one({'_id': ObjectId(str_stack_id)}))
+table.put(
+    b'user2', {
+        b'blog:soccer': b'user2 about soccer'
+    }
+)
 
-# stack_id = db_stacks.insert_one(stack2).inserted_id
-# print(stack_id, type(stack_id))
-#
-# for stack in db_stacks.find():
-#     print(stack)
+print(list(table.scan()))
+print()
+print(list(table.scan(row_prefix=b'user1')))
+print()
+print(list(table.scan(columns=[b'blog:soccer'])))
 
-# now = datetime.datetime.now(datetime.UTC)
-# for stack in db_stacks.find({'data': {'$lt': now}}):
-#     print(stack)
-
-# db_stacks.find_one_and_update(
-#     {'name': 'customer1'}, {'$set': {'name': 'YYY'}}
-# )
-# print(db_stacks.find_one({'name': 'YYY'}))
-
-db_stacks.delete_one({'name': 'YYY'})
-print(db_stacks.find_one({'name': 'YYY'}))
+connection.disable_table(b'sns')
+connection.delete_table(b'sns')
