@@ -2,6 +2,8 @@ import unittest
 
 import calculation
 
+release_name = 'lesson2'
+
 class CalTest(unittest.TestCase):
     def setUp(self):
         print('setup')
@@ -11,6 +13,8 @@ class CalTest(unittest.TestCase):
         print('clean up')
         del self.cal
 
+    # @unittest.skip('skip')
+    @unittest.skipIf(release_name=='lesson', 'skip')
     def test_add_num_and_double(self):
         # cal = calculation.Cal()
         self.assertAlmostEqual(self.cal.add_num_and_double(1, 1),4)
