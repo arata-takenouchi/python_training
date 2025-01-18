@@ -9,36 +9,28 @@ import calculation
 #     assert cal.add_num_and_double(1, 1) == 4
 
 class TestCal(object):
+
+    @classmethod
+    def setup_class(cls):
+        print('start')
+        cls.cal = calculation.Cal()
+
+    @classmethod
+    def teardown_method(cls):
+        print('end')
+        del cls.cal
+
+    def setup_method(self, method):
+        print(f'method={method.__name__}')
+        # self.cal = calculation.Cal()
+
+    def teardown_method(self, method):
+        print(f'method={method.__name__}')
+        # del self.cal
+
     def test_add_num_and_double(self):
-        cal = calculation.Cal()
-        assert cal.add_num_and_double(1, 1) == 4
+        assert self.cal.add_num_and_double(1, 1) == 4
 
     def test_add_num_and_double_raise(self):
         with pytest.raises(ValueError):
-            cal = calculation.Cal()
-            cal.add_num_and_double('1', '1')
-
-# release_name = 'lesson2'
-#
-# class CalTest(unittest.TestCase):
-#     def setUp(self):
-#         print('setup')
-#         self.cal = calculation.Cal()
-#
-#     def tearDown(self):
-#         print('clean up')
-#         del self.cal
-#
-#     # @unittest.skip('skip')
-#     @unittest.skipIf(release_name=='lesson', 'skip')
-#     def test_add_num_and_double(self):
-#         # cal = calculation.Cal()
-#         self.assertAlmostEqual(self.cal.add_num_and_double(1, 1),4)
-#
-#     def test_add_num_and_double_raise(self):
-#         # cal = calculation.Cal()
-#         with self.assertRaises(ValueError):
-#             self.cal.add_num_and_double('1', '1')
-
-# if __name__ == '__main__':
-#     unittest.main()
+            self.cal.add_num_and_double('1', '1')
