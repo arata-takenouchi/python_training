@@ -1,5 +1,12 @@
 import os
 class Cal(object):
+    def __init__(self, name='test'):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+
     def add_num_and_double(self, x, y):
         if type(x) is not int or type(y) is not int:
             raise ValueError
