@@ -51,12 +51,30 @@ class TestSalary(unittest.TestCase):
         self.patcher.stop()
 
     def test_calculation_salary_patch_with_patcher(self):
-        self.mock_bonus.return_value = 1
+        # def f(year):
+        #     return year * 2
+        # self.mock_bonus.side_effect = f
+        # self.mock_bonus.side_effect = lambda year: 1
+        # self.mock_bonus.side_effect = ConnectionRefusedError
+        self.mock_bonus.side_effect = [
+            1,
+            2,
+            3,
+            ValueError('Bankrupt!')
+        ]
 
         s = salary.Salary(year=2017)
         salary_price = s.calculation_salary()
-
-        # s.bonus_api.bonus_price = MagicMock(return_value=0)
         self.assertEqual(salary_price, 101)
-        self.mock_bonus.assert_called()
+        s = salary.Salary(year=2018)
+        salary_price = s.calculation_salary()
+        self.assertEqual(salary_price, 102)
+        s = salary.Salary(year=2019)
+        salary_price = s.calculation_salary()
+        self.assertEqual(salary_price, 103)
+        s = salary.Salary(year=200)
+        with self.assertRaises(ValueError):
+            s.calculation_salary()
+
+        # self.mock_bonus.assert_called()
 
