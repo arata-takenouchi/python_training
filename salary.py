@@ -1,6 +1,9 @@
 import requests
 
 class ThirdPartyBonusRestApi(object):
+    def get_api_name(self):
+        return 'Bonus'
+
     def bonus_price(self, year):
         r = requests.get('http://localhost/bonus', params={'year': year})
         raise ConnectionRefusedError
