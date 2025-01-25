@@ -1,3 +1,4 @@
+import threading
 from multiprocessing import (
     Process,
     Lock, RLock, Semaphore, Queue, Event, Condition, Barrier,
@@ -8,22 +9,31 @@ import logging
 import multiprocessing
 import time
 
+# logging.basicConfig(level=logging.DEBUG, format='%(threadName)s: %(message)s')
 logging.basicConfig(level=logging.DEBUG, format='%(processName)s: %(message)s')
 
-def worker1(i):
-    logging.debug('start')
-    time.sleep(5)
-    logging.debug('end')
-    return i * 2
+def worker1(d, lock):
+    with lock:
+        i = d['x']
+        time.sleep(2)
+        d['x'] = i + 1
+    logging.debug(d)
+
+def worker2(d, lock):
+    with lock:
+        i = d['x']
+        d['x'] = i + 1
+    logging.debug(d)
 
 if __name__ == '__main__':
-    with multiprocessing.Pool(3) as p:
-        r = p.imap(worker1, [100, 200])
-        logging.debug('executed')
-        logging.debug([i for i in r])
-
-        # p1 = p.apply_async(worker1, (100,))
-        # p2 = p.apply_async(worker1, (100,))
-        # logging.debug('executed')
-        # logging.debug(p1.get())
-        # logging.debug(p2.get())
+    d = {'x': 0}
+    lock = Lock()
+    # t1 = threading.Thread(target=worker1, args=(d, lock))
+    # t2 = threading.Thread(target=worker1, args=(d, lock))
+    t1 = multiprocessing.Process(target=worker1, args=(d, lock))
+    t2 = multiprocessing.Process(target=worker2, args=(d, lock))
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+    logging.debug(d)
