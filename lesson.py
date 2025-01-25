@@ -12,17 +12,14 @@ logging.basicConfig(level=logging.DEBUG, format='%(processName)s: %(message)s')
 
 def worker1(i):
     logging.debug('start')
-    logging.debug(i)
+    time.sleep(5)
     logging.debug('end')
-
-def worker2(i):
-    logging.debug('start')
-    logging.debug(i)
-    logging.debug('end')
+    return i
 
 if __name__ == '__main__':
-    i = 10
-    t1 = multiprocessing.Process(target=worker1, args=(i,))
-    t2 = multiprocessing.Process(name='renamed worker2', target=worker2, args=(i,))
-    t1.start()
-    t2.start()
+    with multiprocessing.Pool(3) as p:
+        p1 = p.apply_async(worker1, (100,))
+        p2 = p.apply_async(worker1, (100,))
+        logging.debug('executed')
+        logging.debug(p1.get(timeout=1))
+        logging.debug(p2.get())
