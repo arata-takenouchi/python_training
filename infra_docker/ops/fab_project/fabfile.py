@@ -13,7 +13,6 @@ env.roledefs = {
     'web': ['root@server2:22'],
 }
 
-
 @task
 @roles('common')
 def install_packages():
