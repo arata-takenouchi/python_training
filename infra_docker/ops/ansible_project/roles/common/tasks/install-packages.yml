@@ -1,0 +1,16 @@
+---
+
+
+- name: Install pacakges
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - python-setuptools
+    - software-properties-common
+
+
+- name: Install pip
+  pip:
+    name: pip
+    state: latest
+...

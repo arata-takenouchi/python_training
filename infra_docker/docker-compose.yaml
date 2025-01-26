@@ -1,0 +1,43 @@
+version: '3.4'
+services:
+    main:
+        image: main:latest
+        container_name: main
+        ports:
+            - 22:22
+        extra_hosts:
+            - localhost:host-gateway
+        hostname: main
+        restart: always
+        volumes:
+        - ./ops:/srv/ops
+        networks: [my-network]
+        user: root
+
+    server1:
+        image: server1:latest
+        container_name: server1
+        ports:
+            - 22:22
+        extra_hosts:
+            - localhost:host-gateway
+        hostname: server1
+        restart: always
+        networks: [my-network]
+        user: root
+
+    server2:
+        image: server2:latest
+        container_name: server2
+        ports:
+            - 22:22
+        extra_hosts:
+            - localhost:host-gateway
+        hostname: server2
+        restart: always
+        networks: [my-network]
+        user: root
+
+networks:
+  my-network:
+    driver: bridge
