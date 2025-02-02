@@ -1,14 +1,14 @@
-from multiprocessing.managers import BaseManager
+import time
 
-class QueueManager(BaseManager):
-    pass
+import zmq
 
-QueueManager.register('get_queue')
+context = zmq.Context()
+sock = context.socket(zmq.PUSH)
+sock.bind("tcp://127.0.0.1:5690")
 
-manager = QueueManager(
-    address=('127.0.0.1', 50000),
-    authkey=b'abcdefg'
-)
-manager.connect()
-queue = manager.get_queue()
-queue.put('hello')
+id = 0
+while True:
+    id += 1
+    sock.send(str(id).encode())
+    print(f"Sent: {id}")
+    time.sleep(1)
