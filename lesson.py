@@ -2,28 +2,24 @@ import asyncio
 import multiprocessing
 import threading
 import time
+import requests
+import aiohttp
 
 loop = asyncio.get_event_loop()
 
-# @asyncio.coroutine
-async def worker():
-    print('start')
-    # time.sleep(2
-    # yield from asyncio.sleep(2)
-    await asyncio.sleep(2)
-    print('stop')
+# async def hello(url):
+#     print(requests.get(url).content)
+#     print(time.time())
 
-if __name__ == '__main__':
-    loop.run_until_complete(asyncio.wait([worker(), worker()]))
-    loop.close()
-    # worker()
+async def hello(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            response = await response.read()
+            print(requests.get(url).content)
+            print(time.time())
+    await asyncio.sleep(10)
 
-    # t1 = threading.Thread(target=worker)
-    # t2 = threading.Thread(target=worker)
-    # t1.start()
-    # t2.start()
-
-    # p1 = multiprocessing.Process(target=worker)
-    # p2 = multiprocessing.Process(target=worker)
-    # p1.start()
-    # p2.start()
+loop.run_until_complete(asyncio.wait([
+    hello("http://httpbin.org/headers"),
+    hello("http://httpbin.org/headers")
+]))
