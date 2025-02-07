@@ -1,25 +1,23 @@
 import asyncio
-import multiprocessing
-import threading
-import time
-import requests
-import aiohttp
 
 loop = asyncio.get_event_loop()
 
-# async def hello(url):
-#     print(requests.get(url).content)
-#     print(time.time())
+async def worker1(lock):
+    print('worker1 start')
+    with await lock:
+        print('worker1 got lock')
+        await asyncio.sleep(3)
+    print('worker1 end')
 
-async def hello(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            response = await response.read()
-            print(requests.get(url).content)
-            print(time.time())
-    await asyncio.sleep(10)
+async def worker2(lock):
+    print('worker2 start')
+    with await lock:
+        print('worker2 got lock')
+        await asyncio.sleep(3)
+    print('worker2 end')
 
+lock = asyncio.Lock()
 loop.run_until_complete(asyncio.wait([
-    hello("http://httpbin.org/headers"),
-    hello("http://httpbin.org/headers")
+    worker1(lock), worker2(lock)
 ]))
+loop.close()
