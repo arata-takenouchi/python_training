@@ -2,20 +2,12 @@ import asyncio
 
 loop = asyncio.get_event_loop()
 
-async def f(future):
-    await asyncio.sleep(1)
-    future.set_result('Future is done')
-
-def got_result(future):
-    print(future.result())
+def hello(name, loop):
+    print('Hello {}'.format(name))
     loop.stop()
 
-future = asyncio.Future()
-asyncio.ensure_future(f(future))
+loop.call_later(3, hello, 'Mike', loop)
+loop.call_soon(hello, 'Nancy', loop)
 
-future.add_done_callback(got_result)
-
-# loop.run_until_complete(future)
-# print(future.result())
 loop.run_forever()
 loop.close()
