@@ -1,11 +1,17 @@
+#!/usr/bin/env python
+
 import asyncio
+import datetime
+import random
+import websockets
 
-loop = asyncio.get_event_loop()
+async def time(websocket, path):
+    while True:
+        now = datetime.datetime.utcnow().isoformat() + 'Z'
+        await websocket.send(now)
+        await asyncio.sleep(random.random() * 3)
 
-async def main():
-    print('start')
-    await asyncio.sleep(3)
-    print('done')
+start_server = websockets.serve(time, '127.0.0.1', 5678)
 
-loop.run_until_complete(main())
-loop.close()
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
