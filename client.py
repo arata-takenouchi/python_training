@@ -16,12 +16,27 @@ class AwaitableClass(object):
         data = int(data.decode())
         return data
 
+class AsyncIterater(object):
+    def __init__(self, name, loop):
+        self.name = name
+        self.loop = loop
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        data = await AwaitableClass(self.name, self.loop)
+        if data < 0:
+            raise StopAsyncIteration
+        return data
+
+
 async def main(name, loop):
     print('chunk reader')
-    result = await AwaitableClass(name, loop)
-    print(result)
+    # result = await AwaitableClass(name, loop)
+    async for i in AsyncIterater(name, loop):
+        print(i)
 
-message = 'Hello World!'
 loop.run_until_complete(asyncio.wait([
     main('task1', loop), main('task2', loop)
 ]))
