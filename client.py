@@ -1,14 +1,21 @@
-import time
+import asyncio
 
-import zmq
+@asyncio.coroutine
+def tcp_echo_client(message, loop):
+    reader, writer = yield from asyncio.open_connection(
+        '127.0.0.1', 8888, loop=loop
+    )
 
-context = zmq.Context()
-sock = context.socket(zmq.PUB)
-sock.bind("tcp://127.0.0.1:5690")
+    print('Send: %r' % message)
+    writer.write(message.encode())
 
-id = 0
-while True:
-    id += 1
-    sock.send(('sub1:' + str(id)).encode())
-    print(f"Sent: {id}")
-    time.sleep(1)
+    data = yield from reader.read(100)
+    print('Received: %r' % data.decode())
+
+    print('Close the socket')
+    writer.close()
+
+message = 'Hello World!'
+loop = asyncio.get_event_loop()
+loop.run_until_complete(tcp_echo_client(message, loop))
+loop.close()
