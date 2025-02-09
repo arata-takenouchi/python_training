@@ -2,23 +2,23 @@ import asyncio
 
 loop =  asyncio.get_event_loop()
 
-async def request_server(name, loop):
-    reader, writer = await asyncio.open_connection(
-        '127.0.0.1', 8888, loop=loop)
-    writer.write(name.encode())
-    writer.write_eof()
-    data = await reader.read()
-    data = int(data.decode())
-    return data
+class AwaitableClass(object):
+    def __init__(self, name, loop):
+        self.name = name
+        self.loop = loop
 
-# @asyncio.coroutine
-# def request_server(name, loop):
-#     yield
-#     return 'done'
+    def __await__(self):
+        reader, writer = yield from asyncio.open_connection(
+            '127.0.0.1', 8888, loop=loop)
+        writer.write(self.name.encode())
+        writer.write_eof()
+        data = yield from reader.read()
+        data = int(data.decode())
+        return data
 
 async def main(name, loop):
     print('chunk reader')
-    result = await request_server(name, loop)
+    result = await AwaitableClass(name, loop)
     print(result)
 
 message = 'Hello World!'
