@@ -1,13 +1,14 @@
 import asyncio
 
+async def compute(x, y):
+    print('Compute %s + %s ...' % (x, y))
+    await asyncio.sleep(1)
+    return x + y
+
+async def print_sum(x, y):
+    result = await compute(x, y)
+    print('%s + %s = %s' % (x, y, result))
+
 loop = asyncio.get_event_loop()
-
-def hello(name, loop):
-    print('Hello {}'.format(name))
-    loop.stop()
-
-loop.call_later(3, hello, 'Mike', loop)
-loop.call_soon(hello, 'Nancy', loop)
-
-loop.run_forever()
+loop.run_until_complete(print_sum(1, 2))
 loop.close()
