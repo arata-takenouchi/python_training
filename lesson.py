@@ -1,17 +1,18 @@
-#!/usr/bin/env python
-
 import asyncio
-import datetime
-import random
-import websockets
+import asyncio.subprocess
+import sys
 
-async def time(websocket, path):
-    while True:
-        now = datetime.datetime.utcnow().isoformat() + 'Z'
-        await websocket.send(now)
-        await asyncio.sleep(random.random() * 3)
+async def run(cmd):
+    proc = await asyncio.create_subprocess_shell(
+        cmd, stdout=asyncio.subprocess.PIPE)
+    stdout, stderr = await proc.communicate()
+    print(stdout.decode())
+    exitcode = await proc.wait()
+    print(exitcode)
 
-start_server = websockets.serve(time, '127.0.0.1', 5678)
+loop = asyncio.get_event_loop()
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+loop.run_until_complete(asyncio.wait([
+    run('ls -al'), run('date')
+]))
+loop.close()
