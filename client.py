@@ -1,21 +1,28 @@
 import asyncio
 
-@asyncio.coroutine
-def tcp_echo_client(message, loop):
-    reader, writer = yield from asyncio.open_connection(
-        '127.0.0.1', 8888, loop=loop
-    )
+loop =  asyncio.get_event_loop()
 
-    print('Send: %r' % message)
-    writer.write(message.encode())
+async def request_server(name, loop):
+    reader, writer = await asyncio.open_connection(
+        '127.0.0.1', 8888, loop=loop)
+    writer.write(name.encode())
+    writer.write_eof()
+    data = await reader.read()
+    data = int(data.decode())
+    return data
 
-    data = yield from reader.read(100)
-    print('Received: %r' % data.decode())
+# @asyncio.coroutine
+# def request_server(name, loop):
+#     yield
+#     return 'done'
 
-    print('Close the socket')
-    writer.close()
+async def main(name, loop):
+    print('chunk reader')
+    result = await request_server(name, loop)
+    print(result)
 
 message = 'Hello World!'
-loop = asyncio.get_event_loop()
-loop.run_until_complete(tcp_echo_client(message, loop))
+loop.run_until_complete(asyncio.wait([
+    main('task1', loop), main('task2', loop)
+]))
 loop.close()
